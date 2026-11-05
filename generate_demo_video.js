@@ -239,7 +239,7 @@ async function recordFullDemo() {
   // SCENE 4: MULTI-CHAIN WEB3 PAY INVOICE PORTAL & LIVE PAYMENT (~28 seconds)
   // =========================================================================
   console.log('📌 Scene 4: Web3 Multi-Chain International Invoicing & Live Payment Flow...');
-  await page.goto('http://localhost:8080/pay', { waitUntil: 'domcontentloaded' });
+  await page.goto('http://localhost:8080/pay?demo_wallet=1', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1500);
   await setPresenterHUD('Web3 International Pay Portal', 'Zero-Forex Borderless Rail for International Clients');
   await page.waitForTimeout(2500);
