@@ -1,5 +1,7 @@
 # 🦅 Eagle Byte
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMeet292005%2FEagleByte-ETH-Global-Hackathon&root-directory=Client)
+
 > **Turning Ideas into Digital Reality**
 
 Welcome to **Eagle Byte**, a premium web and application development firm founded by **Kartik Parmar**. We specialize in crafting high-performance digital solutions that help businesses innovate, scale, and succeed.
