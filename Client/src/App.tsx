@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { sepolia } from "wagmi/chains";
 import { wagmiConfig } from "@/lib/web3Config";
 import { usePostHog } from "posthog-js/react";
 import { isPostHogConfigured } from "@/lib/analytics";
@@ -48,6 +49,7 @@ const App = () => {
         <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>
             <RainbowKitProvider
+              initialChain={sepolia}
               theme={darkTheme({
                 accentColor: '#8b5cf6',
                 accentColorForeground: 'white',

@@ -1,5 +1,6 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { http, fallback } from 'wagmi';
 import {
   sepolia,
   arbitrumSepolia,
@@ -27,6 +28,21 @@ export const wagmiConfig = getDefaultConfig({
     optimism,
     mainnet,
   ],
+  transports: {
+    [sepolia.id]: fallback([
+      http('https://ethereum-sepolia-rpc.publicnode.com'),
+      http('https://rpc.sepolia.org'),
+      http('https://sepolia.drpc.org'),
+      http(),
+    ]),
+    [arbitrumSepolia.id]: http(),
+    [baseSepolia.id]: http(),
+    [polygon.id]: http(),
+    [arbitrum.id]: http(),
+    [base.id]: http(),
+    [optimism.id]: http(),
+    [mainnet.id]: http(),
+  },
   ssr: false,
 });
 

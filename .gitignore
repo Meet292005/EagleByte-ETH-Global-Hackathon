@@ -45,4 +45,3 @@ Server/server_error.log
 recordings/
 *.webm
 *.mp4
-!Client/public/demo-video.webm
