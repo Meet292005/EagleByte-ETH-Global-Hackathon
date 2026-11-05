@@ -1,0 +1,8 @@
+{
+  "name": "eaglebyte-ethglobal",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd Client && npm install && npm run build"
+  }
+}
