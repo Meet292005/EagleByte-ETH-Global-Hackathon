@@ -42,6 +42,9 @@ import { useToast } from '@/hooks/use-toast';
 // Block explorer base URLs
 const EXPLORER_URLS: Record<number, string> = {
   1: 'https://etherscan.io',
+  11155111: 'https://sepolia.etherscan.io',
+  421614: 'https://sepolia.arbiscan.io',
+  84532: 'https://sepolia.basescan.org',
   137: 'https://polygonscan.com',
   42161: 'https://arbiscan.io',
   8453: 'https://basescan.org',
@@ -49,7 +52,10 @@ const EXPLORER_URLS: Record<number, string> = {
 };
 
 const CHAIN_NAMES: Record<number, string> = {
-  1: 'Ethereum',
+  1: 'Ethereum Mainnet',
+  11155111: 'Ethereum Sepolia',
+  421614: 'Arbitrum Sepolia',
+  84532: 'Base Sepolia',
   137: 'Polygon',
   42161: 'Arbitrum One',
   8453: 'Base',
