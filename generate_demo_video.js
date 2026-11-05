@@ -236,51 +236,73 @@ async function recordFullDemo() {
   await page.waitForTimeout(4500);
 
   // =========================================================================
-  // SCENE 4: MULTI-CHAIN WEB3 PAY INVOICE PORTAL (~22 seconds)
+  // SCENE 4: MULTI-CHAIN WEB3 PAY INVOICE PORTAL & LIVE PAYMENT (~28 seconds)
   // =========================================================================
-  console.log('📌 Scene 4: Web3 Multi-Chain International Invoicing...');
+  console.log('📌 Scene 4: Web3 Multi-Chain International Invoicing & Live Payment Flow...');
   await page.goto('http://localhost:8080/pay', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1500);
   await setPresenterHUD('Web3 International Pay Portal', 'Zero-Forex Borderless Rail for International Clients');
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(2500);
 
   await smoothScrollTo(220, 1000);
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(1500);
 
   // Token Selection: USDT -> Sepolia ETH
   await setPresenterHUD('Multi-Chain Token Settlement', 'Pay Invoices with USDT, USDC, POL, or Sepolia ETH');
   const usdtBtn = page.getByRole('button', { name: /USDT/i });
   await moveCursorAndClick(usdtBtn);
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(2000);
 
   const ethBtn = page.getByRole('button', { name: /ETH Ethereum/i });
   await moveCursorAndClick(ethBtn);
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(2000);
 
-  // Click Copy Merchant Receiver Address
-  await setPresenterHUD('Verified Merchant Vault', 'Sub-Cent Gas Fees vs 4.5% Traditional SWIFT / PayPal Costs');
-  await moveCursorAndClick('button[title="Copy address"], button:has-text("Direct Deposit")');
-  await page.waitForTimeout(2500);
+  // Smooth scroll to display the payment action button & fee savings
+  await smoothScrollTo(320, 900);
+  await page.waitForTimeout(1200);
+
+  // Trigger Live On-Chain Payment Process
+  await setPresenterHUD('Executing On-Chain Payment', 'Submitting $1.00 USD (0.0003 ETH) Invoice to Ethereum Sepolia');
+  const payBtn = page.locator('button:has-text("Pay")');
+  await moveCursorAndClick(payBtn);
+  console.log('⚡ Pay button clicked: transaction broadcasted...');
+
+  // State 1: Confirming on Blockchain spinner & Tx Hash card
+  await page.waitForTimeout(600);
+  await setPresenterHUD('Confirming on Blockchain...', 'Tx Broadcasted: 0x9a83...319a — Verifying on Ethereum Sepolia');
+  await page.waitForTimeout(3400);
+
+  // State 2: Payment Confirmed Receipt View
+  await setPresenterHUD('Payment Mined & Confirmed', 'Sub-Cent Gas Fee ($0.0003) vs $45 Traditional Banking SWIFT');
+  console.log('⚡ Green verified payment receipt displayed...');
+  await page.waitForTimeout(4500); // Linger on the receipt so judges see the full invoice & tx hash
+
+  // State 3: Transition directly into Admin Portal to verify receipt audit
+  await setPresenterHUD('Real-Time Accounting Sync', 'Transitioning to Executive Admin Portal to Verify Inflow');
+  await moveCursorAndClick('a:has-text("View in Admin Portal")');
+  await page.waitForTimeout(2000);
 
   // =========================================================================
-  // SCENE 5: EXECUTIVE ADMIN PROTOCOL DASHBOARD (~32 seconds)
+  // SCENE 5: EXECUTIVE ADMIN PROTOCOL DASHBOARD (~30 seconds)
   // =========================================================================
   console.log('📌 Scene 5: Executive Admin Protocol Control Center...');
-  await page.goto('http://localhost:8080/admin', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(1500);
+  if (!page.url().includes('/admin')) {
+    await page.goto('http://localhost:8080/admin', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(1500);
+  }
   await setPresenterHUD('Executive Admin Control Center', 'Role-Based Authentication Gate (admin@gmail.com)');
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(2500);
 
   // Click 1-Click Demo Sign In button
   await moveCursorAndClick('button:has-text("1-Click Demo Sign In")');
   console.log('⚡ Admin authenticated...');
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(2500);
 
-  // Now inside Dashboard: View KPI Cards & Live Web3 Transactions
-  await setPresenterHUD('Live Web3 Transactions & Inflows', 'Tracking Multi-Chain Inflow (EB-2145 SepoliaETH, Arb, Base, Poly)');
-  await page.waitForTimeout(3000);
-  await smoothScrollTo(350, 1200);
-  await page.waitForTimeout(3000);
+  // Now inside Dashboard: View KPI Cards & Live Web3 Transactions (Highlighting newly confirmed payment EB-2145)
+  await setPresenterHUD('Live Web3 Settlement Audit', 'EB-2145 Verified On-Chain: 0.0003 ETH ($1.00) Confirmed');
+  await page.waitForTimeout(2000);
+  await smoothScrollTo(360, 1200);
+  await page.waitForTimeout(3500);
 
   // Tab 2: Escrow Works & Deliverables
   await setPresenterHUD('Milestone Governance & 0G Root CIDs', 'Reviewing Deliverable Proofs, World ID Proofs & Payout Authority');
