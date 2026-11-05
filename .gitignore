@@ -40,3 +40,8 @@ logs
 # Server artifacts
 Server/server_info.log
 Server/server_error.log
+
+# Video recordings
+recordings/
+*.webm
+*.mp4
