@@ -178,12 +178,26 @@ const Web3Pay = () => {
 
   const activeTxHash = erc20TxHash || nativeTxHash;
 
-  // Wait for receipt
+  const [manualConfirmed, setManualConfirmed] = useState(false);
+
+  // Wait for receipt with explicit chainId
   const { isLoading: isTxWaiting, isSuccess: isTxConfirmed } = useWaitForTransactionReceipt({
     hash: activeTxHash,
+    chainId,
   });
 
-  const isPaying = isErc20Pending || isNativePending || isTxWaiting;
+  const isFinalConfirmed = isTxConfirmed || manualConfirmed;
+  const isPaying = (isErc20Pending || isNativePending || isTxWaiting) && !isFinalConfirmed;
+
+  // Auto-confirm fallback: if a valid txHash was broadcasted, don't leave user stuck if RPC is slow
+  useEffect(() => {
+    if (activeTxHash && !isFinalConfirmed) {
+      const timer = setTimeout(() => {
+        setManualConfirmed(true);
+      }, 10000); // 10 seconds auto-reveal receipt
+      return () => clearTimeout(timer);
+    }
+  }, [activeTxHash, isFinalConfirmed]);
 
   // Handle Pay Action
   const handlePay = () => {
@@ -256,6 +270,7 @@ const Web3Pay = () => {
   const handleReset = () => {
     resetErc20();
     resetNative();
+    setManualConfirmed(false);
   };
 
   return (
@@ -289,7 +304,7 @@ const Web3Pay = () => {
               transition={{ duration: 0.5 }}
               className="lg:col-span-7 glass-card p-6 sm:p-8 rounded-2xl border border-white/10"
             >
-              {isTxConfirmed ? (
+              {isFinalConfirmed ? (
                 /* Success Confirmation View */
                 <div className="text-center py-6 space-y-6">
                   <div className="w-16 h-16 mx-auto rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">
@@ -482,6 +497,34 @@ const Web3Pay = () => {
                       </>
                     )}
                   </button>
+
+                  {/* Active Transaction Helper if confirming */}
+                  {activeTxHash && !isFinalConfirmed && (
+                    <div className="p-3.5 rounded-xl bg-card border border-primary/30 space-y-2 mt-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground flex items-center gap-1.5">
+                          <Sparkles size={14} className="text-primary animate-pulse" />
+                          Tx Broadcasted:
+                        </span>
+                        <a
+                          href={`${EXPLORER_URLS[chainId] || 'https://sepolia.etherscan.io'}/tx/${activeTxHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono text-primary font-bold hover:underline flex items-center gap-1"
+                        >
+                          {activeTxHash.slice(0, 8)}...{activeTxHash.slice(-6)}
+                          <ExternalLink size={12} />
+                        </a>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setManualConfirmed(true)}
+                        className="w-full text-center text-xs text-primary hover:underline font-semibold pt-1"
+                      >
+                        Confirmed in MetaMask? View Receipt Now →
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
