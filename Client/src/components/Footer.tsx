@@ -10,6 +10,7 @@ const Footer = () => {
     { name: 'Services', path: '/services' },
     { name: 'Web3 Escrow Protocol', path: '/escrow' },
     { name: 'Pay Invoice', path: '/pay' },
+    { name: 'Admin Portal', path: '/admin' },
     { name: 'Contact', path: '/contact' },
   ];
 

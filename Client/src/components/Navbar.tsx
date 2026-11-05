@@ -10,6 +10,7 @@ const navLinks = [
   { name: 'Web3 Escrow', path: '/escrow' },
   { name: 'Pay Invoice', path: '/pay' },
   { name: 'Contact', path: '/contact' },
+  { name: 'Admin', path: '/admin' },
 ];
 
 const Navbar = () => {

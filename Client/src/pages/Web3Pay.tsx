@@ -199,6 +199,34 @@ const Web3Pay = () => {
     }
   }, [activeTxHash, isFinalConfirmed]);
 
+  // Persist confirmed transaction to local storage for Admin Dashboard
+  useEffect(() => {
+    if (isFinalConfirmed && activeTxHash) {
+      try {
+        const stored = JSON.parse(localStorage.getItem('eaglebyte_web3_txs') || '[]');
+        const exists = stored.some((tx: any) => tx.hash === activeTxHash);
+        if (!exists) {
+          const newTx = {
+            id: invoiceNumber,
+            hash: activeTxHash,
+            amount: usdAmount,
+            cryptoAmount: requiredCryptoAmount,
+            token: selectedToken.symbol,
+            network: CHAIN_NAMES[chainId] || `Chain #${chainId}`,
+            chainId,
+            from: address || '0xUserWallet',
+            to: DEFAULT_RECEIVER_ADDRESS,
+            status: 'Confirmed',
+            timestamp: new Date().toISOString(),
+          };
+          localStorage.setItem('eaglebyte_web3_txs', JSON.stringify([newTx, ...stored]));
+        }
+      } catch (e) {
+        console.error('Failed to cache tx', e);
+      }
+    }
+  }, [isFinalConfirmed, activeTxHash, invoiceNumber, usdAmount, requiredCryptoAmount, selectedToken.symbol, chainId, address]);
+
   // Handle Pay Action
   const handlePay = () => {
     if (!isConnected) {
@@ -359,8 +387,14 @@ const Web3Pay = () => {
                       <RotateCcw size={16} /> Pay Another Invoice
                     </button>
                     <Link
+                      to="/admin"
+                      className="px-4 py-2.5 rounded-lg bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 text-sm flex items-center justify-center gap-1.5 transition-colors font-medium"
+                    >
+                      View in Admin Portal
+                    </Link>
+                    <Link
                       to="/"
-                      className="px-4 py-2.5 rounded-lg border border-border text-sm hover:bg-muted/50 transition-colors"
+                      className="px-4 py-2.5 rounded-lg border border-border text-sm hover:bg-muted/50 transition-colors flex items-center justify-center"
                     >
                       Return Home
                     </Link>
