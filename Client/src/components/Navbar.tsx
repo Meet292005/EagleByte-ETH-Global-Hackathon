@@ -9,7 +9,6 @@ const navLinks = [
   { name: 'Services', path: '/services' },
   { name: 'Web3 Escrow', path: '/escrow' },
   { name: 'Pay Invoice', path: '/pay' },
-  { name: '4K Demo Video', path: '/demo-video' },
   { name: 'Contact', path: '/contact' },
 ];
 
