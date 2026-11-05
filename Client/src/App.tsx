@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Web3Pay from "./pages/Web3Pay";
 import EscrowDashboard from "./pages/EscrowDashboard";
+import DemoVideo from "./pages/DemoVideo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -68,6 +69,7 @@ const App = () => {
                     <Route path="/pay" element={<Web3Pay />} />
                     <Route path="/escrow" element={<EscrowDashboard />} />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/demo-video" element={<DemoVideo />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
