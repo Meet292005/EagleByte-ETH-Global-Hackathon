@@ -51,7 +51,7 @@ export const DEFAULT_RECEIVER_ADDRESS = (
 ) as `0x${string}`;
 
 export const DEFAULT_RECEIVER_ENS =
-  import.meta.env.VITE_RECEIVER_ENS || '';
+  import.meta.env.VITE_RECEIVER_ENS || 'eaglebyte.eth';
 
 export interface TokenInfo {
   symbol: string;
