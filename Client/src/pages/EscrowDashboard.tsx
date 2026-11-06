@@ -12,6 +12,7 @@ import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
 import { DEFAULT_RECEIVER_ADDRESS } from '@/lib/web3Config';
 import { uploadToZeroGStorage, ZeroGUploadResult } from '@/lib/zeroGStorage';
+import { verifyWorldIdWithIdKit, getStoredWorldIdProof } from '@/lib/worldStorage';
 import {
   ShieldCheck,
   CheckCircle2,
@@ -110,17 +111,25 @@ const EscrowDashboard = () => {
   const { sendTransaction, data: txHash, isPending } = useSendTransaction();
   const { isSuccess: isTxConfirmed } = useWaitForTransactionReceipt({ hash: txHash });
 
-  // Simulate World ID Verification
-  const handleVerifyWorldId = () => {
+  // World ID Verification with IDKit & Secure Storage
+  const handleVerifyWorldId = async () => {
     setIsVerifyingWorldId(true);
-    setTimeout(() => {
+    try {
+      const proof = await verifyWorldIdWithIdKit(address);
       setIsWorldIdVerified(true);
-      setIsVerifyingWorldId(false);
       toast({
         title: 'World ID Verified! (ZK-Proof)',
-        description: 'Proof of Humanity confirmed. Sybil protection active.',
+        description: `Nullifier: ${proof.nullifier_hash.slice(0, 10)}... | Proof of Humanity active.`,
       });
-    }, 1500);
+    } catch (err: any) {
+      toast({
+        title: 'World ID Verification Failed',
+        description: err?.message || 'Could not verify proof.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsVerifyingWorldId(false);
+    }
   };
 
   // Create Escrow Handler
